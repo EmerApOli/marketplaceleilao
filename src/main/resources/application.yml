@@ -1,23 +1,19 @@
 spring:
   datasource:
-    url: jdbc:h2:mem:marketplace;MODE=PostgreSQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
-    driver-class-name: org.h2.Driver
-    username: sa
-    password:
+    url: jdbc:postgresql://postgres:5432/sistema_db
+    driver-class-name: org.postgresql.Driver
+    username: sistema
+    password: sistema123
 
-    # Configuração pronta para PostgreSQL.
-    # Descomente este bloco quando quiser sair do H2 local.
-    # url: jdbc:postgresql://localhost:5432/marketplace
-    # driver-class-name: org.postgresql.Driver
-    # username: postgres
-    # password: postgres
   h2:
     console:
-      enabled: true
+      enabled: false
+
   servlet:
     multipart:
       max-file-size: 25MB
       max-request-size: 25MB
+
   jpa:
     hibernate:
       ddl-auto: update
@@ -25,6 +21,7 @@ spring:
     properties:
       hibernate:
         format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
 
 server:
   port: 8080
@@ -41,11 +38,7 @@ app:
     expiration-ms: 86400000
   storage:
     upload-dir: uploads
-    public-base-url: http://localhost:8080
+    public-base-url: http://44.197.214.181:8080
     s3-enabled: false
     s3-bucket: marketplace-images
     s3-region: sa-east-1
-    # Preparação para S3:
-    # 1) adicionar spring-cloud-aws ou AWS SDK v2
-    # 2) criar um serviço S3ImageStorageService implementando ImageStorageService
-    # 3) quando s3-enabled=true, retornar a URL pública do bucket/CDN
