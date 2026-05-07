@@ -1,0 +1,28 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: sistema-postgres
+    environment:
+      POSTGRES_DB: sistema_db
+      POSTGRES_USER: sistema_user
+      POSTGRES_PASSWORD: sistema_123
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  backend:
+    build: .
+    container_name: sistema-backend
+    depends_on:
+      - postgres
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/sistema_db
+      SPRING_DATASOURCE_USERNAME: sistema_user
+      SPRING_DATASOURCE_PASSWORD: sistema_123
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    ports:
+      - "8080:8080"
+
+volumes:
+  postgres_data:
